@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Me? ❤️</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0d0d16;
+            color: white;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            width: 100%;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: clamp(28px, 6vw, 42px);
+            color: #ff78b9;
+            text-shadow: 0 0 20px #ff278b55;
+        }
+
+        .emoji {
+            font-size: 42px;
+            margin: 20px 0;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 35px;
+        }
+
+        button {
+            width: 120px;
+            padding: 14px;
+            border: 1px solid #ff78b9;
+            border-radius: 12px;
+            background: #191927;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        #yes {
+            background: #ff4f9a;
+            border: none;
+            font-weight: bold;
+        }
+
+        #yes:hover {
+            background: #ff78b9;
+        }
+
+        #no {
+            position: relative;
+        }
+
+        #message {
+            display: none;
+            color: #ff78b9;
+            font-size: 24px;
+            margin-top: 20px;
+            animation: appear 1s ease;
+        }
+
+        svg {
+            display: none;
+            width: min(300px, 75vw);
+            margin: 20px auto 0;
+            overflow: visible;
+        }
+
+        .heart {
+            fill: none;
+            stroke: #ff3f91;
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            filter: drop-shadow(0 0 10px #ff3f91);
+        }
+
+        .draw {
+            animation: drawHeart 3s ease forwards;
+        }
+
+        @keyframes drawHeart {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <h1 id="question">Do you love me? ❤️</h1>
+
+        <div class="emoji" id="emoji"></div>
+
+        <div class="buttons" id="buttons">
+            <button id="yes">Yes ❤️</button>
+            <button id="no">No 💔</button>
+        </div>
+
+        <svg id="heart" viewBox="0 0 200 180">
+            <path
+                class="heart"
+                id="heartPath"
+                pathLength="1000"
+                d="M100 165
+                   C80 145 15 105 15 57
+                   C15 15 70 5 100 48
+                   C130 5 185 15 185 57
+                   C185 105 120 145 100 165 Z"
+            />
+        </svg>
+
+        <div id="message">
+            I knew it! I love you! ❤️🥹
+        </div>
+    </main>
+
+    <script>
+        const noButton = document.getElementById("no");
+        const yesButton = document.getElementById("yes");
+        const buttons = document.getElementById("buttons");
+        const question = document.getElementById("question");
+        const emoji = document.getElementById("emoji");
+        const heart = document.getElementById("heart");
+        const heartPath = document.getElementById("heartPath");
+        const message = document.getElementById("message");
+
+        function moveNoButton() {
+            const margin = 10;
+
+            const maxX = window.innerWidth
+                - noButton.offsetWidth - margin;
+
+            const maxY = window.innerHeight
+                - noButton.offsetHeight - margin;
+
+            const x = Math.random() * Math.max(0, maxX);
+            const y = Math.random() * Math.max(0, maxY);
+
+            noButton.style.position = "fixed";
+            noButton.style.left = x + "px";
+            noButton.style.top = y + "px";
+            noButton.style.zIndex = "10";
+        }
+
+        noButton.addEventListener("pointerenter", moveNoButton);
+
+        noButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            moveNoButton();
+        });
+
+        yesButton.addEventListener("click", () => {
+            buttons.style.display = "none";
+            question.textContent = "YAY! ❤️";
+            emoji.style.display = "none";
+
+            heart.style.display = "block";
+            message.style.display = "block";
+
+            heartPath.classList.remove("draw");
+            void heartPath.getBoundingClientRect();
+            heartPath.classList.add("draw");
+        });
+    </script>
+</body>
+</html>
